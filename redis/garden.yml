@@ -1,0 +1,17 @@
+kind: Module
+description: Redis service for queueing votes before they are aggregated
+type: container
+name: redis
+image: redis:6
+services:
+  - name: redis
+    args: [ redis-server, --appendonly, yes ]
+    volumes:
+      - name: data
+        containerPath: /data
+    ports:
+      - name: redis
+        protocol: TCP
+        containerPort: 6379
+    healthCheck:
+      command: [ redis-cli, ping ]

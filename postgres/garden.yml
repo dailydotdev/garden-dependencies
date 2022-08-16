@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: postgres
+image: postgres:11.7-alpine
+services:
+  - name: postgres
+    args: [ postgres, -c, wal_level=logical ]
+    volumes:
+      - name: data
+        containerPath: /var/lib/postgresql/data
+      - name: initdb
+        containerPath: /docker-entrypoint-initdb.d
+        hostPath: ./pg-init-scripts
+    ports:
+      - name: postgres
+        containerPort: 5432
+    env:
+      POSTGRES_MULTIPLE_DATABASES: ${var.postgres-databases}
+      POSTGRES_USERNAME: ${var.postgres-username}
+      POSTGRES_PASSWORD: ${var.postgres-password}
+    healthCheck:
+      command: [ pg_isready, -U, "${var.postgres-username}", -d, "${var.postgres-healthcheck-database}" ]
