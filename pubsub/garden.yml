@@ -1,0 +1,17 @@
+kind: Module
+type: container
+name: pubsub
+image: vpol/gcloud-pubsub-emulator:latest
+services:
+  - name: pubsub
+    volumes:
+      - name: data
+        containerPath: /conf
+        hostPath: ./data
+    ports:
+      - name: pubsub
+        containerPort: 8681
+      - name: health-check
+        containerPort: 8682
+    env:
+      CONFIG_FILE: /conf/config.toml
