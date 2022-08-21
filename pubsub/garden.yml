@@ -1,17 +1,10 @@
 kind: Module
 type: container
 name: pubsub
-image: vpol/gcloud-pubsub-emulator:latest
+image: google/cloud-sdk:emulators
 services:
   - name: pubsub
-    volumes:
-      - name: data
-        containerPath: /conf
-        hostPath: ./data
+    command: [gcloud, beta, emulators, pubsub, start, '--host-port=0.0.0.0:8085', '--project=${var.gcloud-project}']
     ports:
       - name: pubsub
-        containerPort: 8681
-      - name: health-check
-        containerPort: 8682
-    env:
-      CONFIG_FILE: /conf/config.toml
+        containerPort: 8085
