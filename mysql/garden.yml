@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: mysql
 image: mariadb:10.8.2
+disabled: ${!var.enabledServices["${this.name}"]}
 services:
   - name: mysql
     args: [ mariadbd, --log-bin=mysqld-bin, --binlog-format=ROW ]
@@ -12,8 +13,8 @@ services:
       - name: mysql
         containerPort: 3306
     env:
-      MYSQL_DATABASE: ${var.mysql-databases}
-      MYSQL_PASSWORD: ${var.mysql-username}
-      MYSQL_ROOT_PASSWORD: ${var.mysql-password}
+      MYSQL_DATABASE: ${var.mysql-databases}?
+      MYSQL_PASSWORD: ${var.mysql-username}?
+      MYSQL_ROOT_PASSWORD: ${var.mysql-password}?
     healthCheck:
-      command: [ mysql, "--user=${var.mysql-username}", "--password=${var.mysql-password}", -e, "SHOW DATABASES;" ]
+      command: [ mysql, "--user=${var.mysql-username}?", "--password=${var.mysql-password}?", -e, "SHOW DATABASES;" ]

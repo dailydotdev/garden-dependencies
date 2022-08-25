@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: postgres
 image: postgres:11.7-alpine
+disabled: ${!var.enabledServices["${this.name}"]}
 services:
   - name: postgres
     args: [ postgres, -c, wal_level=logical ]
@@ -15,8 +16,8 @@ services:
       - name: postgres
         containerPort: 5432
     env:
-      POSTGRES_MULTIPLE_DATABASES: ${var.postgres-databases}
-      POSTGRES_USERNAME: ${var.postgres-username}
-      POSTGRES_PASSWORD: ${var.postgres-password}
+      POSTGRES_MULTIPLE_DATABASES: ${var.postgres-databases}?
+      POSTGRES_USERNAME: ${var.postgres-username}?
+      POSTGRES_PASSWORD: ${var.postgres-password}?
     healthCheck:
-      command: [ pg_isready, -U, "${var.postgres-username}", -d, "${var.postgres-healthcheck-database}" ]
+      command: [ pg_isready, -U, "${var.postgres-username}?", -d, "${var.postgres-healthcheck-database}?" ]

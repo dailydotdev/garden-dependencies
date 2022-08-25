@@ -2,9 +2,10 @@ kind: Module
 type: container
 name: pubsub
 image: google/cloud-sdk:emulators
+disabled: ${!var.enabledServices["${this.name}"]}
 services:
   - name: pubsub
-    command: [gcloud, beta, emulators, pubsub, start, '--host-port=0.0.0.0:8085', '--project=${var.gcloud-project}']
+    command: [gcloud, beta, emulators, pubsub, start, '--host-port=0.0.0.0:8085', '--project=${var.gcloud-project}?']
     ports:
       - name: pubsub
         containerPort: 8085

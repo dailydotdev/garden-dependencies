@@ -2,6 +2,7 @@ kind: Module
 type: container
 name: redis
 image: redis:6
+disabled: ${!var.enabledServices["${this.name}"]}
 services:
   - name: redis
     args: [ redis-server, --appendonly, yes ]
